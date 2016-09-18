@@ -95,6 +95,8 @@ However, the constructor functions always return a new object; they never intera
 
 ## List of polyfilled constructors
 
+Some of the events below don't have any public documentation for their initializer method. These events were still polyfilled because (a) their initializer method would only require a single unique argument, and / or (b) some other evidence was found for the existence of the initializer method.
+
 Event interface | Initializer method | Notes
 ---|---|---
 [`AnimationEvent`](https://developer.mozilla.org/en-US/docs/Web/API/AnimationEvent)                 | `initAnimationEvent()` ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/AnimationEvent/initAnimationEvent))
@@ -114,11 +116,11 @@ Event interface | Initializer method | Notes
 [`MessageEvent`](https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent)                     | `initMessageEvent()` ([MSDN](https://msdn.microsoft.com/en-us/library/ff975295.aspx))
 [`MouseEvent`](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent)                         | `initMouseEvent()` ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/initMouseEvent))
 [`PageTransitionEvent`](https://developer.mozilla.org/en-US/docs/Web/API/PageTransitionEvent)       | `initPageTransitionEvent()`
-[`PointerEvent`](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent)                     | `initPointerEvent()` ([MSDN](https://msdn.microsoft.com/en-us/library/windows/apps/hh441246.aspx))
+[`PointerEvent`](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent)                     | `initPointerEvent()` ([MSDN](https://msdn.microsoft.com/en-us/library/windows/apps/hh441246.aspx)) | Accounts for the fact that the interface is prefixed in IE 10 as `MSPointerEvent` (the constructor is still polyfilled and made available as `PointerEvent`). As of September 2016, `PointerEvent` is not implemented in Chrome (but is [under development](http://crbug.com/196799)).
 [`PopStateEvent`](https://developer.mozilla.org/en-US/docs/Web/API/PopStateEvent)                   | `initPopStateEvent()` ([MSDN](https://msdn.microsoft.com/en-us/library/hh772350.aspx))
 [`ProgressEvent`](https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent)                   | `initProgressEvent()` ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent/initProgressEvent))
 [`StorageEvent`](https://developer.mozilla.org/en-US/docs/Web/API/StorageEvent)                     | `initStorageEvent()` ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/StorageEvent#Methods))
-[`TouchEvent`](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent)                         | `initTouchEvent()` ([Apple](https://developer.apple.com/reference/webkitjs/touchevent/1631943-inittouchevent)) | Accounts for the fact that Chrome does not follow the W3C spec and expects a [different argument list](http://stackoverflow.com/a/31097458/2038227).
+[`TouchEvent`](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent)                         | `initTouchEvent()` ([Apple](https://developer.apple.com/reference/webkitjs/touchevent/1631943-inittouchevent)) | Accounts for the fact that Chrome does not follow the W3C spec and expects a [different argument list](http://stackoverflow.com/a/31097458/2038227) to `initTouchEvent`.
 [`TransitionEvent`](https://developer.mozilla.org/en-US/docs/Web/API/TransitionEvent)               | `initTransitionEvent()` ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/TransitionEvent/initTransitionEvent))
 [`UIEvent`](https://developer.mozilla.org/en-US/docs/Web/API/UIEvent)                               | `initUIEvent()` ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/UIEvent/initUIEvent))
 [`UserProximityEvent`](https://developer.mozilla.org/en-US/docs/Web/API/UserProximityEvent)         | `initUserProximityEvent()`
@@ -127,7 +129,7 @@ Event interface | Initializer method | Notes
 
 ## List of omitted constructors
 
-The following event constructors are not polyfilled by this script. If an event interface is not polyfilled by this script, but is not listed in the table below, then it does not have a documented `initEvent` method associated with it.
+The following event constructors are not polyfilled by this script.
 
 Event interface | Reason for omission
 ---|---

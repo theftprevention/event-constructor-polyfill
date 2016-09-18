@@ -1,4 +1,4 @@
-﻿/*! Event constructor polyfill | Jacob McCollum | MIT License */
+﻿/*! Event constructor polyfill | Jacob McCollum | MIT License | https://github.com/theftprevention/event-constructor-polyfill */
 (function (window) {
     'use strict';
 
@@ -344,6 +344,14 @@
      */
 
     /**
+     * @param {Object} obj
+     * @returns {Boolean}
+     */
+    function isObject(obj) {
+        return (typeof obj === 'object' && obj != null);
+    }
+
+    /**
      * @param {KeyModifierEventInit} props
      * @returns {String}
      */
@@ -470,7 +478,7 @@
         if (args.length === 0) {
             throw new TypeError("Failed to construct '" + info.name + "': parameter 1 ('type') is required.");
         }
-        if (args.length > 1 && args[1] != null && !(args[1] instanceof Object)) {
+        if (args.length > 1 && args[1] != null && !isObject(args[1])) {
             throw new TypeError("Failed to construct '" + info.name + "': parameter 2 ('eventInitDict') is not an object.");
         }
         type = '' + args[0];
@@ -486,15 +494,16 @@
      * @returns {Function}
      */
     function createEventConstructor(info) {
-        var ctor = (function (name) {
+        var constructor = (function (name) {
+            var n = eventInfo[name];
             return function (type, eventInit) {
-                return createEvent(eventInfo[name], this, arguments);
+                return createEvent(n, this, arguments);
             }
         })(info.name);
-        ctor.prototype = info.defaultConstructor.prototype;
-        ctor.prototype.constructor = ctor;
-        window[info.name] = ctor;
-        return ctor;
+        constructor.prototype = info.defaultConstructor.prototype;
+        constructor.prototype.constructor = constructor;
+        window[info.name] = constructor;
+        return constructor;
     }
 
     /**
@@ -524,7 +533,7 @@
         i = 0;
         while (!initializer && i < l) {
             initializerName = 'init' + interfaceNames[i++];
-            initializer = eventInterface.prototype instanceof Object ? eventInterface.prototype[initializerName] : null;
+            initializer = isObject(eventInterface.prototype) ? eventInterface.prototype[initializerName] : null;
         }
         if (typeof initializer !== 'function') {
             return false;
@@ -557,8 +566,5 @@
             delete eventInfo[interfaceName];
         }
     }
-
-    window.E = eventInfo;
-    return eventInfo;
 
 })(window);
